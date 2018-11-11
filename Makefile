@@ -6,7 +6,7 @@
 #    By: cbeltrao <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/10/29 16:20:56 by cbeltrao          #+#    #+#              #
-#    Updated: 2018/11/07 15:13:53 by cbeltrao         ###   ########.fr        #
+#    Updated: 2018/11/09 17:46:49 by cbeltrao         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,7 +21,7 @@ RM = rm -f
 
 CC = gcc
 
-#CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror
 
 LIBX = -L minilibx_macos -lmlx -framework OpenGL -framework AppKit
 
@@ -32,8 +32,7 @@ all: $(NAME)
 $(NAME): $(OBJS)
 	make -C libft
 	make -C minilibx_macos	
-	#$(CC) $(CFLAGS) -o $(NAME) $(OBJS) $(LIBX) $(LIB)
-	$(CC) -o $(NAME) $(OBJS) $(LIBX) $(LIB)
+	$(CC) $(CFLAGS) -o $(NAME) $(OBJS) $(LIBX) $(LIB) -fsanitize=address
 
 clean:
 	$(RM) $(OBJS)

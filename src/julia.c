@@ -6,53 +6,53 @@
 /*   By: cbeltrao <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/07 14:52:18 by cbeltrao          #+#    #+#             */
-/*   Updated: 2018/11/07 15:30:04 by cbeltrao         ###   ########.fr       */
+/*   Updated: 2018/11/11 18:05:38 by cbeltrao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/fractol.h"
 #include "../libft/libft.h"
-int	fractal_draw_julia(t_mlx *mlx)
-{
-	// each iteration it calculates: new = old*old + c, where c is a constant and old starts at current pixel
-	double cRe, cIm;	// Real and imaginary part of the constant c, determinate shape of the julia set
-	double newRe, newIm, oldRe, oldIm;
-	double zoom = 1, moveX = 0, moveY = 0; //you can change to zoom and change position
-	int		color;//ColorRGB color;
-	int		maxIterations = 300;
-	int		i;
-	int		x, y;
-	
+#include <mlx.h>
 
-	cRe = -0.7;
-	cIm = 0.27015;
-	y = 0;	
-	//for(int y = 0; y < HEIGHT; y++)
-	while(y < HEIGHT)
+void	fractal_draw_julia(t_mlx *mlx, t_julia j)
+{
+	int		i;
+
+	j.y = 0;
+	while (j.y < HEIGHT)
 	{
-	//for(int x = 0; x < WIDTH; x++)
-		x = 0;
-		while(x < WIDTH)
+		j.x = 0;
+		while (j.x < WIDTH)
 		{
-			newRe = 1.5 * (x - WIDTH / 2) / (0.5 * zoom * WIDTH) + moveX;
-			newIm = (y - HEIGHT / 2) / (0.5 * zoom * HEIGHT) + moveY;
-			//i will represnet the number of iterations
-			for(i = 0; i < maxIterations; i++)
+			j.re = 1.5 * (j.x - WIDTH / 2) / (0.5 * j.zoom * WIDTH) + j.move_x;
+			j.im = (j.y - HEIGHT / 2) / (0.5 * j.zoom * HEIGHT) + j.move_y;
+			i = 0;
+			while (i++ < j.max_iterations)
 			{
-				//remember values
-				oldRe = newRe;
-				oldIm = newIm;
-				//the acutla iteration, real and imaginary parts calculated
-				newRe = oldRe * oldRe - oldIm * oldIm + cRe;
-				newIm = 2 * oldRe * oldIm + cIm;
-				// if the point is outside the circle with radius 2: stop
-				if((newRe * newRe + newIm * newIm) > 4)
-					break;
+				j.old_Re = j.re;
+				j.old_Im = j.im;
+				j.re = j.old_Re * j.old_Re - j.old_Im * j.old_Im + j.cRe;
+				j.im = 2 * j.old_Re * j.old_Im + j.cIm;
+				if ((j.re * j.re + j.im * j.im) > 4)
+					break ;
 			}
-			fill_pixel(mlx->img.pixel_pos, x, y, i);
-			x++;
+			fill_pixel(mlx->img.pixel_pos, j.x, j.y, i);
+			j.x++;
 		}
-		y++;
+		j.y++;
 	}
+}
+
+int		set_julia(t_mlx *mlx)
+{
+	t_julia julia;
+
+	julia.zoom = mlx->params.zoom;
+	julia.move_x = mlx->params.move_x;
+	julia.move_y = mlx->params.move_y;
+	julia.cRe = mlx->params.cRe;
+	julia.cIm = mlx->params.cIm;
+	fractal_draw_julia(mlx, julia);
+	mlx_put_image_to_window(mlx->mlx_ptr, mlx->win_ptr, mlx->img.img_ptr, 0, 0);
 	return (SUCCESS);
 }
