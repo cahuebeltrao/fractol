@@ -6,13 +6,15 @@
 /*   By: cbeltrao <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/06 12:20:43 by cbeltrao          #+#    #+#             */
-/*   Updated: 2018/11/11 18:24:57 by cbeltrao         ###   ########.fr       */
+/*   Updated: 2018/11/12 18:24:42 by cbeltrao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <mlx.h>
 #include "../libft/libft.h"
 #include "../includes/fractol.h"
+
+#include <stdio.h> // DELETE
 
 int	fractol_start(t_mlx *mlx, char *fractal_name);
 
@@ -34,27 +36,35 @@ int	move(int x, int y, t_mlx *mlx)
 	}
 	else if(mlx->params.mouse_x != 0 && mlx->params.mouse_y != 0)
 	{
-		if(x > (mlx->params.mouse_x + 10) || y > (mlx->params.mouse_y + 10))
+		if(x > (mlx->params.mouse_x + 5) || y > (mlx->params.mouse_y + 5))
 		{
-			mlx->params.cRe += 0.01;
 			mlx->params.mouse_x = x;
 			mlx->params.mouse_y = y;
-			fractol_start(mlx, "julia");
+			if(mlx->params.cRe < DEF_CRE)
+			{
+				//mlx->params.zoom += 0.1;
+				mlx->params.cRe += 0.005;
+				mlx->params.cIm -= 0.0009;
+				fractol_start(mlx, "julia");
+			}
 			return(SUCCESS);
 		}	
-		else if (x < (mlx->params.mouse_x - 10) || y < (mlx->params.mouse_y - 10))
+		else if (x < (mlx->params.mouse_x - 5) || y < (mlx->params.mouse_y - 5))
 		{
-			mlx->params.cRe -= 0.01;
 			mlx->params.mouse_x = x;
 			mlx->params.mouse_y = y;
-			fractol_start(mlx, "julia");
+			if (mlx->params.cRe > -1.5)
+			{
+				//mlx->params.zoom -= 0.1;
+				mlx->params.cRe -= 0.005;
+				mlx->params.cIm += 0.00005;
+				fractol_start(mlx, "julia");
+			}
 			return(SUCCESS);
 		}
 	}
-	ft_putstr("\n");
-	ft_putnbr(x);
-	ft_putstr("\n");
-	ft_putnbr(y);
+	printf("%f\n", mlx->params.cRe);
+	fflush(stdout);
 	return (1);
 }
 
@@ -109,20 +119,8 @@ int	mlx_start(char *fractal_name)
 	mlx->params.cRe = DEF_CRE;
 	mlx->params.cIm = DEF_CIM;
 	fractol_start(mlx, fractal_name);
-	/*
-	mlx->mlx_ptr = mlx_init();
-	mlx->win_ptr = mlx_new_window(mlx->mlx_ptr, WIDTH, HEIGHT, "Fract'ol");
-	if(mlx->img.img_ptr)
-		mlx_destroy_image(mlx->mlx_ptr, mlx->img.img_ptr);
-	mlx->img.img_ptr = mlx_new_image(mlx->mlx_ptr, WIDTH, HEIGHT);
-	mlx->img.pixel_pos = (unsigned int *)mlx_get_data_addr(mlx->img.img_ptr
-			, &(mlx->img.size_l), &(mlx->img.bpp), &(mlx->img.endian));
-	if (set_fractal(mlx, fractal_name) < 0)
-		return (INVAL_FRACTAL_ERR);
-	//initialize_menu(mlx);
-	*/
 	mlx_key_hook(mlx->win_ptr, deal_key, mlx);
-	mlx_hook(mlx->win_ptr, 6, (1L<<6), move, mlx);
+	mlx_hook(mlx->win_ptr, MOTION_NOTIFY, POINTER_MOTION_MASK, move, mlx);
 	mlx_loop(mlx->mlx_ptr);
 	return (SUCCESS);
 }

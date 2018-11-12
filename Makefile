@@ -6,7 +6,7 @@
 #    By: cbeltrao <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/10/29 16:20:56 by cbeltrao          #+#    #+#              #
-#    Updated: 2018/11/09 17:46:49 by cbeltrao         ###   ########.fr        #
+#    Updated: 2018/11/12 18:17:50 by cbeltrao         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,7 +32,7 @@ all: $(NAME)
 $(NAME): $(OBJS)
 	make -C libft
 	make -C minilibx_macos	
-	$(CC) $(CFLAGS) -o $(NAME) $(OBJS) $(LIBX) $(LIB) -fsanitize=address
+	$(CC) $(CFLAGS) -o $(NAME) $(OBJS) $(LIBX) $(LIB)
 
 clean:
 	$(RM) $(OBJS)

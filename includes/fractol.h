@@ -6,7 +6,7 @@
 /*   By: cbeltrao <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/06 12:26:41 by cbeltrao          #+#    #+#             */
-/*   Updated: 2018/11/11 18:05:57 by cbeltrao         ###   ########.fr       */
+/*   Updated: 2018/11/12 18:24:20 by cbeltrao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,15 +30,15 @@
 # define DEF_ZOOM 1
 # define DEF_MOVE_X 0
 # define DEF_MOVE_Y 0
-# define DEF_CRE (-0.7)
+# define DEF_CRE (-0.73)
 # define DEF_CIM 0.27015
 
-# define PointerMotionMask (1L<<6)
-# define MotionNotify 6
+# define POINTER_MOTION_MASK (1L<<6)
+# define MOTION_NOTIFY 6
 
 typedef	struct	s_params
 {
-	int				zoom;
+	float			zoom;
 	int				move_x;
 	int				move_y;
 	int				mouse_x;
@@ -49,7 +49,7 @@ typedef	struct	s_params
 
 typedef struct	s_julia
 {
-	int				zoom;
+	float			zoom;
 	int				move_x;
 	int				move_y;
 	double			cRe;
@@ -76,8 +76,6 @@ typedef struct	s_mlx
 {
 	void		*mlx_ptr;
 	void		*win_ptr;
-	int			win_length;
-	int			win_depth;
 	t_params	params;
 	t_img		img;
 }				t_mlx;
