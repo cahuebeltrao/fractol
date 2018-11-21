@@ -6,14 +6,14 @@
 #    By: cbeltrao <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/10/29 16:20:56 by cbeltrao          #+#    #+#              #
-#    Updated: 2018/11/12 18:17:50 by cbeltrao         ###   ########.fr        #
+#    Updated: 2018/11/21 21:30:53 by cbeltrao         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 
 NAME = fractol
 
-SRCS = src/main.c src/draw.c src/julia.c
+SRCS = src/main.c src/draw.c src/julia.c src/mandelbrot.c
 
 OBJS = $(SRCS:.c=.o)
 
@@ -21,7 +21,7 @@ RM = rm -f
 
 CC = gcc
 
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -g
 
 LIBX = -L minilibx_macos -lmlx -framework OpenGL -framework AppKit
 

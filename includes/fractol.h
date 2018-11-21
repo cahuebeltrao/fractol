@@ -6,15 +6,15 @@
 /*   By: cbeltrao <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/06 12:26:41 by cbeltrao          #+#    #+#             */
-/*   Updated: 2018/11/12 18:24:20 by cbeltrao         ###   ########.fr       */
+/*   Updated: 2018/11/21 22:25:10 by cbeltrao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FRACTOL_H
 # define FRACTOL_H
 
-# define HEIGHT 1200
-# define WIDTH 1400
+# define HEIGHT 500
+# define WIDTH 500
 
 # define SUCCESS 1
 # define INVAL_FRACTAL_ERR -2
@@ -33,6 +33,9 @@
 # define DEF_CRE (-0.73)
 # define DEF_CIM 0.27015
 
+# define Q 12
+# define E 14
+
 # define POINTER_MOTION_MASK (1L<<6)
 # define MOTION_NOTIFY 6
 
@@ -46,6 +49,23 @@ typedef	struct	s_params
 	double			cRe;
 	double			cIm;
 }				t_params;
+
+typedef struct	s_mandelbrot
+{
+	double			pr;
+	double			pi;
+	double			new_Re;
+	double			new_Im;
+	double			old_Re;
+	double			old_Im;
+	float			zoom;
+	int				move_x;
+	int				move_y;
+	int				x;
+	int				y;
+	int				i;
+	int				max_iterations;
+}				t_mandelbrot;
 
 typedef struct	s_julia
 {
@@ -85,5 +105,13 @@ void			fill_pixel(unsigned int *img, int x, int y, int i);
 void			fractal_draw_julia(t_mlx *mlx, t_julia julia);
 
 int				set_julia(t_mlx *mlx);
+
+void			fractol_draw_mandelbrot(t_mlx *mlx, t_mandelbrot mandelbrot);
+
+int				set_mandelbrot(t_mlx *mlx);
+
+int				move(int x, int y, t_mlx*mlx);
+
+int				fractol_start(t_mlx *mlx, char *fractal_name);
 
 #endif

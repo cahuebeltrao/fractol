@@ -6,7 +6,7 @@
 /*   By: cbeltrao <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/07 14:52:18 by cbeltrao          #+#    #+#             */
-/*   Updated: 2018/11/12 18:23:54 by cbeltrao         ###   ########.fr       */
+/*   Updated: 2018/11/21 22:28:25 by cbeltrao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,4 +62,51 @@ int		set_julia(t_mlx *mlx)
 	fractal_draw_julia(mlx, julia);
 	mlx_put_image_to_window(mlx->mlx_ptr, mlx->win_ptr, mlx->img.img_ptr, 0, 0);
 	return (SUCCESS);
+}
+
+int		const_increase(t_mlx *mlx, int x, int y)
+{
+	mlx->params.mouse_x = x;
+	mlx->params.mouse_y = y;
+	mlx->params.cRe += 0.005;
+	fractol_start(mlx, "julia");
+	return (SUCCESS);
+}
+
+int		const_decrease(t_mlx *mlx, int x, int y)
+{
+	mlx->params.mouse_x = x;
+	mlx->params.mouse_y = y;
+	mlx->params.cRe -= 0.005;
+	fractol_start(mlx, "julia");
+	return (SUCCESS);
+}
+
+int		move(int x, int y, t_mlx *mlx)
+{
+	(void)mlx;
+	if (mlx->params.mouse_x == 0 && mlx->params.mouse_y == 0)
+	{
+		mlx->params.mouse_x = x;
+		mlx->params.mouse_y = y;
+	}
+	else if (mlx->params.mouse_x != 0 && mlx->params.mouse_y != 0)
+	{
+		if ((x > (mlx->params.mouse_x + 5) || y > (mlx->params.mouse_y + 5))
+				&& x < WIDTH && y < HEIGHT - 10
+				&& x > 0 && y > 0)
+		{
+			const_increase(mlx, x, y);
+			return (SUCCESS);
+		}
+		else if ((x < (mlx->params.mouse_x - 5)
+				|| y < (mlx->params.mouse_y - 5))
+				&& x < WIDTH && y < HEIGHT
+				&& x > 0 && y > 0)
+		{
+			const_decrease(mlx, x, y);
+			return (SUCCESS);
+		}
+	}
+	return (1);
 }
