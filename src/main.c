@@ -6,7 +6,7 @@
 /*   By: cbeltrao <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/06 12:20:43 by cbeltrao          #+#    #+#             */
-/*   Updated: 2018/11/21 22:29:21 by cbeltrao         ###   ########.fr       */
+/*   Updated: 2018/11/21 23:25:01 by cbeltrao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,33 +52,54 @@ int	set_fractal(t_mlx *mlx, char *fractal_name)
 {
 	if (!fractal_name || !mlx)
 		return (INVAL_FRACTAL_ERR);
-	if ((ft_strcmp(fractal_name, "Julia") == 0) ||
-			(ft_strcmp(fractal_name, "julia") == 0))
+	//if ((ft_strcmp(fractal_name, "Julia") == 0) ||
+	//		(ft_strcmp(fractal_name, "julia") == 0))
+	if (mlx->fractol_type == JULIA)
 		if (set_julia(mlx) < 0)
 			return (DRAW_ERR);
-	if ((ft_strcmp(fractal_name, "Mandelbrot") == 0) ||
-			(ft_strcmp(fractal_name, "mandelbrot") == 0))
+	//if ((ft_strcmp(fractal_name, "Mandelbrot") == 0) ||
+			//(ft_strcmp(fractal_name, "mandelbrot") == 0))
+	if (mlx->fractol_type == MANDELBROT)
 		if (set_mandelbrot(mlx) < 0)
 			return (DRAW_ERR);
 	return (SUCCESS);
 }
 
+int	fractol_check(t_mlx *mlx, char *fractal_name)
+{
+	if (!fractal_name || !mlx)
+		return (INVAL_FRACTAL_ERR);
+	if ((ft_strcmp(fractal_name, "Julia") == 0) ||
+			(ft_strcmp(fractal_name, "julia") == 0))
+	{
+		mlx->fractol_type = JULIA;
+		return (SUCCESS);
+	}
+	else if ((ft_strcmp(fractal_name, "Mandelbrot") == 0) ||
+			(ft_strcmp(fractal_name, "mandelbrot") == 0))
+	{
+		mlx->fractol_type = MANDELBROT;
+		return (SUCCESS);
+	}
+	return (INVAL_FRACTAL_ERR);	
+
+}
+
 int	fractol_start(t_mlx *mlx, char *fractal_name)
 {
+	if (fractol_check(mlx, fractal_name) < 0)
+		return (INVAL_FRACTAL_ERR);
 	if (!(mlx->mlx_ptr))
 	{
 		mlx->mlx_ptr = mlx_init();
-		ft_putstr("entrou mlx_init\n");
 	}
 	if (!(mlx->win_ptr))
 	{
 		mlx->win_ptr = mlx_new_window(mlx->mlx_ptr, WIDTH, HEIGHT, "Fract'ol");
-		ft_putstr("entrou new window\n");
 	}
 	if (mlx->img.img_ptr)
 	{
 		mlx_destroy_image(mlx->mlx_ptr, mlx->img.img_ptr);
-		ft_putstr("entrou pra destruir\n");
 	}
 	mlx->img.img_ptr = mlx_new_image(mlx->mlx_ptr, WIDTH, HEIGHT);
 	mlx->img.pixel_pos = (unsigned int *)mlx_get_data_addr(mlx->img.img_ptr
@@ -92,7 +113,7 @@ int	mlx_start(char *fractal_name)
 {
 	t_mlx	*mlx;
 
-	if (!(mlx = (t_mlx *)ft_memalloc(sizeof(t_mlx))))
+	if (!(mlx = (t_mlx *)ft_memalloc(sizeof(t_mlx) + ft_strlen(fractal_name + 1))))
 		return (INVAL_MEM_ERR);
 	mlx->params.zoom = DEF_ZOOM;
 	mlx->params.move_x = DEF_MOVE_X;
@@ -101,7 +122,11 @@ int	mlx_start(char *fractal_name)
 	mlx->params.mouse_y = 0;
 	mlx->params.cRe = DEF_CRE;
 	mlx->params.cIm = DEF_CIM;
-	fractol_start(mlx, fractal_name);
+	if (fractol_start(mlx, fractal_name) < 0)
+	{
+		ft_putstr("Invalid fractal name\n");
+		return (INVAL_FRACTAL_ERR);
+	}
 	mlx_key_hook(mlx->win_ptr, deal_key, mlx);
 	mlx_mouse_hook(mlx->win_ptr, mouse_hook, mlx);
 	mlx_hook(mlx->win_ptr, MOTION_NOTIFY, POINTER_MOTION_MASK, move, mlx);

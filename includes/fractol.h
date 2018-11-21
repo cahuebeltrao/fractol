@@ -6,7 +6,7 @@
 /*   By: cbeltrao <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/06 12:26:41 by cbeltrao          #+#    #+#             */
-/*   Updated: 2018/11/21 22:25:10 by cbeltrao         ###   ########.fr       */
+/*   Updated: 2018/11/21 23:18:58 by cbeltrao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,9 @@
 
 # define POINTER_MOTION_MASK (1L<<6)
 # define MOTION_NOTIFY 6
+
+# define JULIA 1
+# define MANDELBROT 2
 
 typedef	struct	s_params
 {
@@ -96,6 +99,7 @@ typedef struct	s_mlx
 {
 	void		*mlx_ptr;
 	void		*win_ptr;
+	int			fractol_type;
 	t_params	params;
 	t_img		img;
 }				t_mlx;
