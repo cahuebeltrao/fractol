@@ -6,7 +6,7 @@
 /*   By: cbeltrao <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/06 12:20:43 by cbeltrao          #+#    #+#             */
-/*   Updated: 2018/11/21 23:25:01 by cbeltrao         ###   ########.fr       */
+/*   Updated: 2018/11/22 01:57:50 by cbeltrao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,53 +14,18 @@
 #include "../libft/libft.h"
 #include "../includes/fractol.h"
 
-int	zoom_test(t_mlx *mlx)
-{
-	mlx->params.zoom += 0.5;
-	fractol_start(mlx, "julia");
-	return (0);
-}
-
-int	deal_key(int key, t_mlx *mlx)
-{
-	(void)mlx;
-	if (key == ESC)
-		exit(SUCCESS);
-	else if (key == Q)
-		zoom_test(mlx);
-	return (SUCCESS);
-}
-
-int	mouse_hook(int key, int x, int y, t_mlx *mlx)
-{
-	(void)x;
-	(void)y;
-	if (key == 4)
-	{
-		mlx->params.zoom += 0.1;
-		fractol_start(mlx, "julia");
-	}
-	else if (key == 5 && mlx->params.zoom > 1.0)
-	{
-		mlx->params.zoom -= 0.1;
-		fractol_start(mlx, "julia");
-	}
-	return (0);
-}
-
 int	set_fractal(t_mlx *mlx, char *fractal_name)
 {
 	if (!fractal_name || !mlx)
 		return (INVAL_FRACTAL_ERR);
-	//if ((ft_strcmp(fractal_name, "Julia") == 0) ||
-	//		(ft_strcmp(fractal_name, "julia") == 0))
 	if (mlx->fractol_type == JULIA)
 		if (set_julia(mlx) < 0)
 			return (DRAW_ERR);
-	//if ((ft_strcmp(fractal_name, "Mandelbrot") == 0) ||
-			//(ft_strcmp(fractal_name, "mandelbrot") == 0))
 	if (mlx->fractol_type == MANDELBROT)
 		if (set_mandelbrot(mlx) < 0)
+			return (DRAW_ERR);
+	if (mlx->fractol_type == MINE)
+		if (set_mine(mlx) < 0)
 			return (DRAW_ERR);
 	return (SUCCESS);
 }
@@ -81,8 +46,13 @@ int	fractol_check(t_mlx *mlx, char *fractal_name)
 		mlx->fractol_type = MANDELBROT;
 		return (SUCCESS);
 	}
-	return (INVAL_FRACTAL_ERR);	
-
+	else if ((ft_strcmp(fractal_name, "Mine") == 0) ||
+			(ft_strcmp(fractal_name, "mine") == 0))
+	{
+		mlx->fractol_type = MINE;
+		return (SUCCESS);
+	}
+	return (INVAL_FRACTAL_ERR);
 }
 
 int	fractol_start(t_mlx *mlx, char *fractal_name)
@@ -113,9 +83,9 @@ int	mlx_start(char *fractal_name)
 {
 	t_mlx	*mlx;
 
-	if (!(mlx = (t_mlx *)ft_memalloc(sizeof(t_mlx) + ft_strlen(fractal_name + 1))))
+	if (!(mlx = (t_mlx *)ft_memalloc(sizeof(t_mlx))))
 		return (INVAL_MEM_ERR);
-	mlx->params.zoom = DEF_ZOOM;
+	mlx->params.zoom = zoom_set(fractal_name);
 	mlx->params.move_x = DEF_MOVE_X;
 	mlx->params.move_y = DEF_MOVE_Y;
 	mlx->params.mouse_x = 0;

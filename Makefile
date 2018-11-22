@@ -6,14 +6,15 @@
 #    By: cbeltrao <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/10/29 16:20:56 by cbeltrao          #+#    #+#              #
-#    Updated: 2018/11/21 21:30:53 by cbeltrao         ###   ########.fr        #
+#    Updated: 2018/11/22 01:56:17 by cbeltrao         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 
 NAME = fractol
 
-SRCS = src/main.c src/draw.c src/julia.c src/mandelbrot.c
+SRCS = src/main.c src/draw.c src/julia.c src/mandelbrot.c src/controls.c \
+	   src/mine.c src/zoom.c
 
 OBJS = $(SRCS:.c=.o)
 

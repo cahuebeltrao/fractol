@@ -6,7 +6,7 @@
 /*   By: cbeltrao <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/07 14:52:18 by cbeltrao          #+#    #+#             */
-/*   Updated: 2018/11/21 22:28:25 by cbeltrao         ###   ########.fr       */
+/*   Updated: 2018/11/21 23:32:37 by cbeltrao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,29 +84,24 @@ int		const_decrease(t_mlx *mlx, int x, int y)
 
 int		move(int x, int y, t_mlx *mlx)
 {
-	(void)mlx;
-	if (mlx->params.mouse_x == 0 && mlx->params.mouse_y == 0)
+	if (mlx->params.mouse_x == 0 && mlx->params.mouse_y == 0 &&
+			mlx->fractol_type == JULIA)
 	{
 		mlx->params.mouse_x = x;
 		mlx->params.mouse_y = y;
 	}
-	else if (mlx->params.mouse_x != 0 && mlx->params.mouse_y != 0)
+	else if (mlx->params.mouse_x != 0 && mlx->params.mouse_y != 0 &&
+			mlx->fractol_type == JULIA)
 	{
 		if ((x > (mlx->params.mouse_x + 5) || y > (mlx->params.mouse_y + 5))
-				&& x < WIDTH && y < HEIGHT - 10
+				&& x < WIDTH && y < HEIGHT
 				&& x > 0 && y > 0)
-		{
 			const_increase(mlx, x, y);
-			return (SUCCESS);
-		}
 		else if ((x < (mlx->params.mouse_x - 5)
 				|| y < (mlx->params.mouse_y - 5))
 				&& x < WIDTH && y < HEIGHT
 				&& x > 0 && y > 0)
-		{
 			const_decrease(mlx, x, y);
-			return (SUCCESS);
-		}
 	}
-	return (1);
+	return (SUCCESS);
 }

@@ -6,15 +6,15 @@
 /*   By: cbeltrao <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/06 12:26:41 by cbeltrao          #+#    #+#             */
-/*   Updated: 2018/11/21 23:18:58 by cbeltrao         ###   ########.fr       */
+/*   Updated: 2018/11/22 01:57:34 by cbeltrao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FRACTOL_H
 # define FRACTOL_H
 
-# define HEIGHT 500
-# define WIDTH 500
+# define HEIGHT 600
+# define WIDTH 800
 
 # define SUCCESS 1
 # define INVAL_FRACTAL_ERR -2
@@ -26,6 +26,7 @@
 # define L_PINK 0xf6c4d2
 # define D_PINK 0xbe3782
 # define L_BLUE 0x3697dd
+# define GREY 0xc9cace
 
 # define DEF_ZOOM 1
 # define DEF_MOVE_X 0
@@ -41,6 +42,7 @@
 
 # define JULIA 1
 # define MANDELBROT 2
+# define MINE 3
 
 typedef	struct	s_params
 {
@@ -117,5 +119,17 @@ int				set_mandelbrot(t_mlx *mlx);
 int				move(int x, int y, t_mlx*mlx);
 
 int				fractol_start(t_mlx *mlx, char *fractal_name);
+
+int				deal_key(int key, t_mlx *mlx);
+
+int				mouse_hook(int ket, int x, int y, t_mlx *mlx);
+
+void			fractal_draw_mine(t_mlx *mlx, t_mandelbrot m);
+
+int				set_mine(t_mlx *mlx);
+
+void			ft_reset_mandel(t_mandelbrot *m);
+
+int				zoom_set(char *fractal_name);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: cbeltrao <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/07 14:52:18 by cbeltrao          #+#    #+#             */
-/*   Updated: 2018/11/22 01:37:13 by cbeltrao         ###   ########.fr       */
+/*   Updated: 2018/11/22 01:59:06 by cbeltrao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,7 @@
 #include "../libft/libft.h"
 #include <mlx.h>
 
-void	ft_reset_mandel(t_mandelbrot *m)
-{
-	m->new_Re = 0;
-	m->new_Im = 0;
-	m->old_Re = 0;
-	m->old_Im = 0;
-}
-
-void	fractal_draw_mandelbrot(t_mlx *mlx, t_mandelbrot m)
+void	fractal_draw_mine(t_mlx *mlx, t_mandelbrot m)
 {
 	m.y = 0;
 	while (m.y < HEIGHT)
@@ -30,11 +22,11 @@ void	fractal_draw_mandelbrot(t_mlx *mlx, t_mandelbrot m)
 		m.x = 0;
 		while (m.x < WIDTH)
 		{
-			m.pr = 1.5 * (m.x - WIDTH / 2) / (0.5 * m.zoom * WIDTH) + -0.5;
-			m.pi = (m.y - HEIGHT / 2) / (0.5 * m.zoom * HEIGHT) + m.move_y;
+			m.pr = 1.5 * (m.x - WIDTH / 2) / (0.5 * m.zoom * WIDTH) + -0.743153;
+			m.pi = (m.y - HEIGHT / 2) / (0.5 * m.zoom * HEIGHT) + -0.1394057861;
 			m.i = 0;
 			ft_reset_mandel(&m);
-			while (m.i++ < m.max_iterations)
+			while (m.i++ < 150)
 			{
 				m.old_Re = m.new_Re;
 				m.old_Im = m.new_Im;
@@ -50,21 +42,21 @@ void	fractal_draw_mandelbrot(t_mlx *mlx, t_mandelbrot m)
 	}
 }
 
-int		set_mandelbrot(t_mlx *mlx)
+int		set_mine(t_mlx *mlx)
 {
-	t_mandelbrot mandelbrot;
+	t_mandelbrot mine;
 
-	mandelbrot.move_x = mlx->params.move_x;
-	mandelbrot.move_y = mlx->params.move_y;
-	mandelbrot.zoom = mlx->params.zoom;
-	mandelbrot.new_Re = 0;
-	mandelbrot.new_Im = 0;
-	mandelbrot.old_Re = 0;
-	mandelbrot.old_Im = 0;
-	mandelbrot.max_iterations = 150;
-	mandelbrot.x = 0;
-	mandelbrot.y = 0;
-	fractal_draw_mandelbrot(mlx, mandelbrot);
+	mine.move_x = mlx->params.move_x;
+	mine.move_y = mlx->params.move_y;
+	mine.zoom = mlx->params.zoom;
+	mine.new_Re = 0;
+	mine.new_Im = 0;
+	mine.old_Re = 0;
+	mine.old_Im = 0;
+	mine.max_iterations = 150;
+	mine.x = 0;
+	mine.y = 0;
+	fractal_draw_mine(mlx, mine);
 	mlx_put_image_to_window(mlx->mlx_ptr, mlx->win_ptr, mlx->img.img_ptr, 0, 0);
 	return (SUCCESS);
 }
